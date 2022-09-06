@@ -7,7 +7,17 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     await dbConnect();
 
-    const tasks = await Task.find();
+    let filter = {} as {
+      isCompleted?: boolean;
+    };
+
+    if (req.query.complete) {
+      filter = {
+        isCompleted: JSON.parse(req.query.complete as string),
+      };
+    }
+
+    const tasks = await Task.find(filter);
 
     res.status(200).json(tasks);
   } catch (err) {
