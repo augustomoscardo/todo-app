@@ -12,8 +12,8 @@ import { useTasks } from "../../hooks/useTasks";
 
 interface TaskItemProps {
   task: {
-    _id: string;
-    description: string;
+    _id?: string;
+    description?: string;
     isCompleted: boolean;
   };
 }
@@ -35,7 +35,7 @@ export function TaskItem({ task }: TaskItemProps) {
   };
 
   const handleDeleteTask = async () => {
-    await deleteTask(task._id);
+    await deleteTask(task._id as string);
   };
 
   return (
@@ -54,7 +54,7 @@ export function TaskItem({ task }: TaskItemProps) {
         size="lg"
         colorScheme="transparent"
         color={checkboxTextValue}
-        checked={task.isCompleted}
+        isChecked={task.isCompleted}
         onChange={handleToggle}
         _checked={{
           textDecoration: "line-through",
