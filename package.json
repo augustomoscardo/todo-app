@@ -13,12 +13,14 @@
     "@chakra-ui/react": "^1.8.8",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "@types/react-beautiful-dnd": "^13.1.2",
     "axios": "^0.26.1",
     "framer-motion": "^6",
     "mongodb": "^4.8.1",
     "mongoose": "^6.5.2",
     "next": "12.1.4",
     "react": "18.0.0",
+    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "18.0.0"
   },
   "devDependencies": {
