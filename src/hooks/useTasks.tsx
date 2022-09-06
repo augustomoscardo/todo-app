@@ -8,6 +8,8 @@ import {
 
 import { api } from "../services/api";
 
+type Filter = "all" | "active" | "completed";
+
 type Task = {
   _id?: string;
   description?: string;
@@ -17,13 +19,14 @@ type Task = {
 
 interface TasksContextData {
   tasks: Task[];
-  getTasks: () => Promise<void>;
+  getTasks: (type: Filter) => Promise<void>;
   getActiveTasks: () => Promise<void>;
   getCompletedTasks: () => Promise<void>;
   createTask: (data: Task) => Promise<void>;
   updateTask: (data: Task) => Promise<void>;
   deleteTask: (_id: string) => Promise<void>;
   deleteAllCompletedTask: () => Promise<void>;
+  filter: Filter;
 }
 
 interface TasksProviderProps {
@@ -34,9 +37,27 @@ const TasksContext = createContext<TasksContextData>({} as TasksContextData);
 
 export function TasksProvider({ children }: TasksProviderProps) {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [filter, setFilter] = useState<Filter>("all");
 
-  async function getTasks() {
-    const response = await api.get("/tasks/listAll");
+  async function getTasks(value: Filter) {
+    // GET /tasks?complete=true
+
+    setFilter(value);
+
+    const filter = {} as {
+      complete?: boolean;
+    };
+
+    if (value === "active") {
+      filter.complete = false;
+    }
+    if (value === "completed") {
+      filter.complete = true;
+    }
+
+    const response = await api.get("/tasks/listAll", {
+      params: filter,
+    });
 
     const tasksList = response.data;
 
@@ -44,7 +65,12 @@ export function TasksProvider({ children }: TasksProviderProps) {
   }
 
   async function getActiveTasks() {
-    const response = await api.get("/tasks/listActive");
+    const response = await api.get("/tasks/listAll", {
+      params: {
+        complete: false,
+      },
+    });
+    // const response = await api.get("/tasks/listActive");
 
     const tasksList = response.data;
 
@@ -52,7 +78,12 @@ export function TasksProvider({ children }: TasksProviderProps) {
   }
 
   async function getCompletedTasks() {
-    const response = await api.get("/tasks/listCompleted");
+    const response = await api.get("/tasks/listAll", {
+      params: {
+        complete: true,
+      },
+    });
+    // const response = await api.get("/tasks/listCompleted");
 
     const tasksList = response.data;
 
@@ -93,11 +124,11 @@ export function TasksProvider({ children }: TasksProviderProps) {
   async function deleteAllCompletedTask() {
     await api.post("/tasks/deleteCompleted");
 
-    getTasks();
+    getTasks("all");
   }
 
   useEffect(() => {
-    getTasks();
+    getTasks("all");
   }, []);
 
   return (
@@ -111,6 +142,7 @@ export function TasksProvider({ children }: TasksProviderProps) {
         getActiveTasks,
         getCompletedTasks,
         deleteAllCompletedTask,
+        filter,
       }}
     >
       {children}
