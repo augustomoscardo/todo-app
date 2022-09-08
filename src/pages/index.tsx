@@ -20,7 +20,7 @@ const Home: NextPage = () => {
   );
   const mobileImageValue = useColorModeValue(
     "/images/bg-mobile-light.jpg",
-    "/images/bg-mobile-light.jpg"
+    "/images/bg-mobile-dark.jpg"
   );
 
   const imageValue = useBreakpointValue({
@@ -31,7 +31,6 @@ const Home: NextPage = () => {
   return (
     <Flex
       background={backgroundValue}
-      // backgroundSize={["100%", "100%"]}
       height="100%"
       minW="375px"
       maxW={["375px", "100%"]}
@@ -49,10 +48,10 @@ const Home: NextPage = () => {
       </Box>
       <Flex
         direction="column"
-        maxW="500px"
+        maxW={["330px", "500px"]}
         width="100%"
         position="absolute"
-        mt={["5rem", "7rem"]}
+        mt={["2.5rem", "7rem"]}
         height="100vh"
         alignItems="center"
       >

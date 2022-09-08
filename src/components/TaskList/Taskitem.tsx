@@ -1,10 +1,12 @@
 import { ChangeEvent } from "react";
+import { DraggableProvided } from "react-beautiful-dnd";
 
 import {
   Button,
   Checkbox,
   Flex,
   Image as ChakraImage,
+  Text,
   useColorModeValue,
 } from "@chakra-ui/react";
 
@@ -16,10 +18,12 @@ interface TaskItemProps {
     description?: string;
     isCompleted: boolean;
   };
+  provided: DraggableProvided;
 }
 
-export function TaskItem({ task }: TaskItemProps) {
-  const checkboxTextValue = useColorModeValue("gray.600", "gray.100");
+export function TaskItem({ task, provided }: TaskItemProps) {
+  const checkboxTextValue = useColorModeValue("gray.600", "gray.200");
+  const checkboxCheckedTextValue = useColorModeValue("gray.200", "gray.400");
   const borderBottomColorValue = useColorModeValue("gray.200", "gray.500");
 
   const { updateTask, deleteTask } = useTasks();
@@ -29,7 +33,6 @@ export function TaskItem({ task }: TaskItemProps) {
       _id: task._id,
       isCompleted: e.target.checked,
     };
-    console.log(newTask);
 
     await updateTask(newTask);
   };
@@ -45,37 +48,42 @@ export function TaskItem({ task }: TaskItemProps) {
       width="100%"
       align="center"
       justify="space-between"
+      ref={provided.innerRef}
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
     >
       <Checkbox
+        w="100%"
+        py={5}
         borderRadius="full"
         spacing={4}
-        py={4}
-        ml={4}
+        ml={5}
         size="lg"
-        colorScheme="transparent"
         color={checkboxTextValue}
+        colorScheme="transparent"
         isChecked={task.isCompleted}
         onChange={handleToggle}
         _checked={{
           textDecoration: "line-through",
-          textDecorationColor: "gray.300",
-          textColor: "gray.300",
+          textDecorationColor: checkboxCheckedTextValue,
+          textColor: checkboxCheckedTextValue,
         }}
       >
-        {task.description}
+        <Text fontSize={["sm", "lg"]}>{task.description}</Text>
       </Checkbox>
       <Button
         bg="transparent"
         _hover={{ background: "transparent" }}
         p={0}
-        mr={5}
+        mr={[1.5, 2]}
         onClick={handleDeleteTask}
       >
         <ChakraImage
           src="/images/icon-cross.svg"
           alt="Delete task"
-          width={4}
-          height={4}
+          w="100%"
+          boxSize={[3, 4]}
+          height={[3, 4]}
         />
       </Button>
     </Flex>
