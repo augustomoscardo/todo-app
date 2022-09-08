@@ -10,7 +10,7 @@ import { api } from "../services/api";
 
 type Filter = "all" | "active" | "completed";
 
-type Task = {
+export type Task = {
   _id?: string;
   description?: string;
   isCompleted: boolean;
@@ -20,13 +20,12 @@ type Task = {
 interface TasksContextData {
   tasks: Task[];
   getTasks: (type: Filter) => Promise<void>;
-  getActiveTasks: () => Promise<void>;
-  getCompletedTasks: () => Promise<void>;
   createTask: (data: Task) => Promise<void>;
   updateTask: (data: Task) => Promise<void>;
   deleteTask: (_id: string) => Promise<void>;
   deleteAllCompletedTask: () => Promise<void>;
   filter: Filter;
+  reorderTasks: (data: Task[]) => void;
 }
 
 interface TasksProviderProps {
@@ -58,32 +57,6 @@ export function TasksProvider({ children }: TasksProviderProps) {
     const response = await api.get("/tasks/listAll", {
       params: filter,
     });
-
-    const tasksList = response.data;
-
-    setTasks(tasksList);
-  }
-
-  async function getActiveTasks() {
-    const response = await api.get("/tasks/listAll", {
-      params: {
-        complete: false,
-      },
-    });
-    // const response = await api.get("/tasks/listActive");
-
-    const tasksList = response.data;
-
-    setTasks(tasksList);
-  }
-
-  async function getCompletedTasks() {
-    const response = await api.get("/tasks/listAll", {
-      params: {
-        complete: true,
-      },
-    });
-    // const response = await api.get("/tasks/listCompleted");
 
     const tasksList = response.data;
 
@@ -124,7 +97,11 @@ export function TasksProvider({ children }: TasksProviderProps) {
   async function deleteAllCompletedTask() {
     await api.post("/tasks/deleteCompleted");
 
-    getTasks("all");
+    await getTasks("all");
+  }
+
+  function reorderTasks(data: Task[]) {
+    setTasks(data);
   }
 
   useEffect(() => {
@@ -139,10 +116,9 @@ export function TasksProvider({ children }: TasksProviderProps) {
         updateTask,
         deleteTask,
         getTasks,
-        getActiveTasks,
-        getCompletedTasks,
         deleteAllCompletedTask,
         filter,
+        reorderTasks,
       }}
     >
       {children}
