@@ -1,6 +1,8 @@
 import { FormEvent, useState } from "react";
 
 import {
+  Checkbox,
+  Flex,
   FormControl,
   Input as ChakraInput,
   useColorModeValue,
@@ -30,17 +32,18 @@ export function FormInput() {
   return (
     <form onSubmit={handleNewTask} style={{ width: "100%" }}>
       <FormControl>
-        <ChakraInput
-          placeholder="Create a new todo..."
-          mt={8}
-          bg={backGroundValue}
-          padding={4}
-          color={inputColor}
-          variant="unstyled"
-          _placeholder={{ color: "gray.300" }}
-          value={description}
-          onChange={(event) => setDescription(event.target.value)}
-        />
+        <Flex mt={[6, 8]} padding={5} gap={4} rounded="md" bg={backGroundValue}>
+          <Checkbox isDisabled size="lg" />
+          <ChakraInput
+            fontSize={["sm", "lg"]}
+            color={inputColor}
+            variant="unstyled"
+            placeholder="Create a new todo..."
+            _placeholder={{ color: "gray.300" }}
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
+          />
+        </Flex>
       </FormControl>
     </form>
   );
