@@ -14,9 +14,17 @@ export function ThemeButton() {
       onClick={toggleColorMode}
     >
       {colorMode === "dark" ? (
-        <ChakraImage src="/images/icon-sun.svg" alt="Light mode" />
+        <ChakraImage
+          src="/images/icon-sun.svg"
+          alt="Light mode"
+          boxSize={["20px", "30px"]}
+        />
       ) : (
-        <ChakraImage src="/images/icon-moon.svg" alt="Dark mode" />
+        <ChakraImage
+          src="/images/icon-moon.svg"
+          alt="Dark mode"
+          boxSize="20px"
+        />
       )}
     </Button>
   );
