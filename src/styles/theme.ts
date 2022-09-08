@@ -31,6 +31,10 @@ export const theme = extendTheme({
       color: "gray.50",
     },
   },
+  sizes: {
+    desktop: "1440px",
+    mobile: "375px",
+  },
   components: {
     Checkbox: {
       baseStyle: {
@@ -45,7 +49,7 @@ export const theme = extendTheme({
           borderRadius: "50%",
           _disabled: {
             borderColor: "gray.300",
-            bg: "gray.200",
+            bg: "transparent",
           },
           _checked: {
             bgGradient: "linear(to-r, gradientBlue.500, gradientPurple.500)",
