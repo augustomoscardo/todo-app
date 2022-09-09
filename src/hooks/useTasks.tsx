@@ -39,8 +39,6 @@ export function TasksProvider({ children }: TasksProviderProps) {
   const [filter, setFilter] = useState<Filter>("all");
 
   async function getTasks(value: Filter) {
-    // GET /tasks?complete=true
-
     setFilter(value);
 
     const filter = {} as {
