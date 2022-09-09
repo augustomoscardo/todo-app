@@ -25,8 +25,6 @@ export function TaskList() {
   const { tasks, deleteAllCompletedTask, filter, reorderTasks } = useTasks();
   const [elements, setElements] = useState<Task[] | []>([]);
 
-  console.log(elements);
-
   const backGroundValue = useColorModeValue("gray.50", "gray.800");
   const hoverValue = useColorModeValue("gray.800", "gray.100");
 
@@ -45,13 +43,11 @@ export function TaskList() {
     }
 
     if (filter === "completed") {
-      return "no items left";
+      return "0 items left";
     }
   }, [tasks]);
 
   function handleOnDragEnd(result: DropResult) {
-    console.log(result);
-
     if (!result.destination) return;
 
     if (
@@ -64,8 +60,6 @@ export function TaskList() {
 
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
-
-    console.log(items);
 
     reorderTasks(items);
   }

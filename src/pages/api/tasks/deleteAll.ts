@@ -21,10 +21,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 
     await dbConnect();
 
-    // const deleteTask = await Task.deleteMany();
-    const deleteTask = {};
-
-    console.log(`Completed tasks deleted with success.`);
+    const deleteTask = await Task.deleteMany();
 
     return res.status(200).json(deleteTask);
   } catch (err) {
